@@ -102,7 +102,7 @@ const Loader = (function () {
      *
      */
     _p.init = function () {
-        cc.vv.Observer.on('releaseAll', this.onReleaseAll, this);
+        cc.vv.EventTarget.on('releaseAll', this.onReleaseAll, this);
     };
 
     /**监听重新登入
@@ -293,7 +293,7 @@ const Loader = (function () {
             throw '加载图集转为动画并播放没有节点';
         var name = path + '_' + newName;
         if (this.animationClip[name] === true)
-            return cc.vv.Observer.once(name, animationCallBack, node);
+            return cc.vv.EventTarget.once(name, animationCallBack, node);
         else if (this.animationClip[name] instanceof cc.AnimationClip)
             return animationCallBack.call(node, this.animationClip[name]);
         this.animationClip[name] = true;
@@ -301,7 +301,7 @@ const Loader = (function () {
             clip.wrapMode = wapMode;
             clip.$$newName = newName;
             animationCallBack.call(node, clip);
-            cc.vv.Observer.emit(name, clip);
+            cc.vv.EventTarget.emit(name, clip);
             this.animationClip[name] = clip;
         }.bind(this), sample);
     };

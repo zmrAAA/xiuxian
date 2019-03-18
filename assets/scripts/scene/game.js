@@ -39,7 +39,7 @@ cc.Class({
             self.prefab[name] = prefab;
             callback && callback(node);
         });
-        cc.vv.Observer.emit('create_' + name);
+        cc.vv.EventTarget.emit('create_' + name);
     },
 
     /**移除所有界面
@@ -50,7 +50,7 @@ cc.Class({
         for (let i in newNode) {
             this.removePrefabByName(i);
         }
-        cc.vv.Observer.emit('releaseAll');
+        cc.vv.EventTarget.emit('releaseAll');
     },
 
     /**通过名字移除预制相关资源
@@ -65,7 +65,7 @@ cc.Class({
         cc.vv.Loader.release(self.prefab[name], true);
         self.prefab[name] = null;
         self.destroyNode(name);
-        cc.vv.Observer.emit('remove_' + name);
+        cc.vv.EventTarget.emit('remove_' + name);
     },
 
     /**通过名字销毁节点

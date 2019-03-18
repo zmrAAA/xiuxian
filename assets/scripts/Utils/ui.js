@@ -118,10 +118,12 @@ const $ui = {
      * @param target      需要绑定组件的节点
      */
     bindComponent(target) {
-        var components = target._components;
-        components.forEach((component) => {
-            this._bindComponent(target, component);
-        });
+        var self = this,
+            components = target._components,
+            i = components.length - 1;
+        for (; i >= 0; i--) {
+            self._bindComponent(target, components[i]);
+        }
         components = null;
     },
 
@@ -130,10 +132,13 @@ const $ui = {
      * @param target    目标节点
      */
     bindDescendantsNode(target) {
-        target.children.forEach((chi) => {
-            this._bindDescendantsNode(target, chi);
-            this.init(chi);
-        });
+        var self = this,
+            childrens = target.children,
+            i = childrens.length - 1;
+        for (; i >= 0; i--) {
+            self._bindDescendantsNode(target, childrens[i]);
+            self.init(childrens[i]);
+        }
     }
 };
 // var array = function () {

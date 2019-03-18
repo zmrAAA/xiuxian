@@ -1,8 +1,8 @@
-if (!CC_EDITOR) {
+var onEvent = {};
+function start() {
     const URL = require('config').socket.url,
         ws = URL ? new WebSocket(URL) : {};
 
-    var onEvent = {};
 
     ws.onmessage = function (e) {
         var data = e.data;
@@ -36,26 +36,29 @@ if (!CC_EDITOR) {
         cc.vv.EventTarget.emit('wsOpen');
     }
 
-    module.exports = {
-        ws: ws,
-        send(type, data) {
-            if (!data) {
-                data = {};
-            }
-            data.type = type;
-            try {
-                data = JSON.stringify(data);
-            } catch (e) {
-                console.log('WebSocket 发送数据出错');
-            }
-            ws.send(data);
-        },
+    module.exports.ws = ws;
+}
 
-        on(type, cb) {
-            if (!onEvent[type]) {
-                onEvent[type] = [];
-            }
-            onEvent[type].push(cb);
+module.exports = {
+    start: start,
+    ws: null,
+    send(type, data) {
+        if (!data) {
+            data = {};
         }
-    };
+        data.type = type;
+        try {
+            data = JSON.stringify(data);
+        } catch (e) {
+            console.log('WebSocket 发送数据出错');
+        }
+        ws.send(data);
+    },
+
+    on(type, cb) {
+        if (!onEvent[type]) {
+            onEvent[type] = [];
+        }
+        onEvent[type].push(cb);
+    }
 }
